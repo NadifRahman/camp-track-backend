@@ -10,6 +10,9 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+//CONFIG THE DATABASE
+require('./config/database.js');
+
 app.use(cors()); //CHANGE to actual origin later
 
 app.use(logger('dev'));
