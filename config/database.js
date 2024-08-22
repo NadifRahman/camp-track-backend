@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+0;
 const dotenv = require('dotenv');
 
 require('dotenv').config(); //import env variables
