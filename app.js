@@ -13,6 +13,9 @@ var app = express();
 //CONFIG THE DATABASE
 require('./config/database.js');
 
+//CONFIG passport
+require('./config/passport.js');
+
 app.use(cors()); //CHANGE to actual origin later
 
 app.use(logger('dev'));
