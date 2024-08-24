@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const UserController = require('../controller/UserController');
 
-/* GET users listing. */
+/* GET users listing. */ //CHANGE TRY TO REMOVE THIS AND SEE IF THINGS STILL WORK
 router.get('/', function (req, res, next) {
   res.json({ message: 'users' });
 });
