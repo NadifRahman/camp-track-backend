@@ -8,6 +8,6 @@ router.get('/', function (req, res, next) {
 
 router.post('/camper', CamperController.camper_post);
 router.get('/camper/:postid', CamperController.camper_get);
-router.get('/campers', CamperController.campers_get);
+router.get('/campers', CamperController.campers_get); //gets the whole collection of campers
 
 module.exports = router;
