@@ -10,7 +10,7 @@ const Schema = mongoose.Schema;
 - guardian_phone is required, CUSTOM VALIDATOR MAKES SURE ONLY NUMBERS, 
   NEED TO MAKE SURE ON CUSTOM VALIDATOR ON ALL INPUITS, must have 10 digits
 - home_address is a string, required, maxLength is 200 chars
-- dietary_restrctions is a string, required (could be empty), maxLength is 200 chars
+- dietary_restrictions is a string, required (could be empty), maxLength is 200 chars
 - medical_conditions is a string, required (could be empty), maxLength is 200 chars
 */
 
@@ -43,16 +43,14 @@ const CamperSchema = new Schema({
     },
   },
   home_address: { type: String, required: true, maxLength: 200 },
-  dietary_restrctions: {
+  dietary_restrictions: {
     type: String,
     maxLength: 200,
-    required: true,
     default: '',
   },
   medical_conditions: {
     type: String,
     maxLength: 200,
-    required: tru,
     default: '',
   },
 });

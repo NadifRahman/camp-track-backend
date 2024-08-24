@@ -1,9 +1,11 @@
 const asyncHandler = require('express-async-handler');
 const Camper = require('../models/Camper');
 const { body, validationResult } = require('express-validator');
+const mongoose = require('mongoose');
+const passport = require('passport');
 
 // request body should have the following, first_name, last_name, age,
-// guardian_full_name, guardian_phone, home_address, dietary_restrctions (could be emptystring),
+// guardian_full_name, guardian_phone, home_address, dietary_restrictions (could be emptystring),
 // medical_conditions (could be empty string)
 exports.camper_post = [
   body('first_name')
@@ -53,19 +55,25 @@ exports.camper_post = [
   body('home_address')
     .trim()
     .isLength({ min: 1 })
-    .withMessage('Please enter a home address'),
+    .withMessage('Please enter a home address')
+    .isLength({ max: 200 })
+    .withMessage('Home Address - Max character length is 200'),
 
   body('dietary_restrictions')
     .trim()
     .optional({ checkFalsy: true }) //allows empty string
     .isString()
-    .withMessage('Dietary Restrictions - Must be a string.'),
+    .withMessage('Dietary Restrictions - Must be a string.')
+    .isLength({ max: 200 })
+    .withMessage('Dietary Restrictions - Max Character Length is 200'),
 
   body('medical_conditions')
     .trim()
     .optional({ checkFalsy: true }) // allows empty strings
     .isString()
-    .withMessage('Medical Conditions - Must be a string.'),
+    .withMessage('Medical Conditions - Must be a string.')
+    .isLength({ max: 200 })
+    .withMessage('Medical Conditions - Max Character Length is 200'),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -109,5 +117,53 @@ exports.camper_post = [
     res
       .status(201)
       .json({ statusSucc: true, message: 'Camper registered successfully' });
+  }),
+];
+
+//expects there to be a postid param in the url
+//protected route
+exports.camper_get = [
+  passport.authenticate('jwt', { session: false }), //PROTECTED ROUTE
+
+  asyncHandler(async (req, res, next) => {
+    const postId = req.params['postid']; //get from url param
+
+    if (!mongoose.isValidObjectId(postId)) {
+      res
+        .status(404)
+        .json({ statusSucc: false, message: 'Cannot find camper' });
+      return;
+    }
+
+    const foundCamper = await Camper.findOne({ _id: postId });
+
+    if (!foundCamper) {
+      //if no camper was found
+      res
+        .status(404)
+        .json({ statusSucc: false, message: 'Cannot find camper' });
+    } else {
+      //camper was found
+      res.status(200).json({
+        statusSucc: true,
+        message: 'Found camper',
+        camper: foundCamper,
+      });
+    }
+  }),
+];
+
+//gets all the campers
+exports.campers_get = [
+  passport.authenticate('jwt', { session: false }), //PROTECTED ROUTE
+
+  asyncHandler(async (req, res, next) => {
+    const campers = await Camper.find({}, 'first_name last_name age');
+
+    res.status(200).json({
+      statusSucc: true,
+      message: 'Successfully fetched campers',
+      campers,
+    });
   }),
 ];
