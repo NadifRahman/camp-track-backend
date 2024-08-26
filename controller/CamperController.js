@@ -123,6 +123,8 @@ exports.camper_post = [
 //expects there to be a postid param in the url
 //protected route
 exports.camper_get = [
+  passport.authenticate('jwt', { session: false }), //PROTECTED ROUTE
+
   asyncHandler(async (req, res, next) => {
     const postId = req.params['postid']; //get from url param
 
