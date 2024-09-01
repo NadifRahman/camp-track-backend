@@ -10,7 +10,7 @@ const CamperAttendanceSchema = new Schema({
   },
   signin: {
     type: String,
-    required: true,
+
     validate: {
       validator: function (time) {
         return time === '' || /^[0-9]{3}$/.test(time); //empty string or 3 char string in format ___ (like 920)
@@ -22,7 +22,7 @@ const CamperAttendanceSchema = new Schema({
   },
   signout: {
     type: String,
-    required: true,
+
     validate: {
       validator: function (time) {
         return time === '' || /^[0-9]{3}$/.test(time); //empty string or 3 char string in format ___ (like 920)

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const CamperController = require('../controller/CamperController');
 const InventoryController = require('../controller/InventoryController');
-
+const AttendanceController = require('../controller/AttendanceController');
 router.get('/', function (req, res, next) {
   res.json({ msg: 'hi' });
 });
@@ -13,5 +13,7 @@ router.get('/campers', CamperController.campers_get); //gets the whole collectio
 router.post('/inventory', InventoryController.inventory_post);
 router.get('/inventory/:postid', InventoryController.inventory_get);
 router.get('/inventories', InventoryController.inventories_get);
+
+router.post('/attendance', AttendanceController.attendance_post); //creates an attendance record
 
 module.exports = router;
