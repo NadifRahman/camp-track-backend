@@ -72,3 +72,46 @@ exports.attendance_post = [
     });
   }),
 ];
+
+exports.attendances_get = [
+  passport.authenticate('jwt', { session: false }), //PROTECTED ROUTE
+
+  asyncHandler(async (req, res, next) => {
+    const allAttendances = await Attendance.find({}, 'date').sort({ date: -1 });
+
+    res.status(200).json({
+      statusSucc: true,
+      message: 'Succesfully fetched attendances',
+      attendances: allAttendances,
+    });
+  }),
+];
+
+//get a specific attendance
+//assumes there is a postid
+exports.attendance_get = [
+  passport.authenticate('jwt', { session: false }), //PROTECTED ROUTE
+
+  asyncHandler(async (req, res, next) => {
+    const postId = req.params['postid']; //get from url param
+
+    if (!mongoose.isValidObjectId(postId)) {
+      res.status(404).json({
+        statusSucc: false,
+        message: 'Cannot find attendance listing',
+      });
+      return;
+    }
+
+    const attendance = await Attendance.findOne({ _id: postId }).populate({
+      path: 'attendance.camper_id', // Path to populate
+      select: 'first_name last_name', // Fields to return; _id is included by default
+    });
+
+    res.status(200).json({
+      statusSucc: true,
+      message: 'Succesfully fetched attendance record',
+      attendance,
+    });
+  }),
+];
