@@ -115,3 +115,69 @@ exports.attendance_get = [
     });
   }),
 ];
+
+//update an attendance record
+//takes a date (html format) and takes an attendance array (must match schema)
+//needs attendance, date, and id in the request body
+//attendance is
+
+exports.attendance_update = [
+  passport.authenticate('jwt', { session: false }), // PROTECTED ROUTE
+
+  body('id').isMongoId().withMessage('Invalid attendance ID'),
+
+  // Validate that attendance is an array
+  body('attendance').isArray().withMessage('Attendance must be an array'),
+
+  body('attendance.*.camper_id').isMongoId().withMessage('Invalid camper ID'),
+
+  body('attendance.*.signin')
+    .custom((value) => {
+      return value === '' || /^[0-9]{3}$/.test(value); // Allow empty string or 3-digit string
+    })
+    .withMessage('Sign-in time must be a 3-digit string or empty'),
+
+  body('attendance.*.signout')
+    .custom((value) => {
+      return value === '' || /^[0-9]{3}$/.test(value); // Allow empty string or 3-digit string
+    })
+    .withMessage('Sign-out time must be a 3-digit string or empty'),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.status(422).json({
+        statusSucc: false,
+        message: 'There are errors',
+        errors: errors.errors.map((error) => error.msg),
+      });
+      return;
+    }
+
+    //otherwise go on to update
+
+    const updatedAttendance = await Attendance.findByIdAndUpdate(
+      req.body.id,
+      {
+        attendance: Array.isArray(req.body.attendance)
+          ? req.body.attendance
+          : [],
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedAttendance) {
+      //unable to fetch attendace record
+      return res.status(404).json({
+        statusSucc: false,
+        message: 'Attendance record not found',
+      });
+    }
+
+    res.status(200).json({
+      statusSucc: true,
+      message: 'Attendance record updated successfully',
+    });
+  }),
+];

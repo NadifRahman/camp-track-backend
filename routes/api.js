@@ -17,5 +17,6 @@ router.get('/inventories', InventoryController.inventories_get);
 router.post('/attendance', AttendanceController.attendance_post); //creates an attendance record
 router.get('/attendances', AttendanceController.attendances_get);
 router.get('/attendance/:postid', AttendanceController.attendance_get);
+router.put('/attendance', AttendanceController.attendance_update);
 
 module.exports = router;
