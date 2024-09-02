@@ -69,6 +69,7 @@ exports.attendance_post = [
     res.status(201).json({
       statusSucc: true,
       message: 'Successfully created attendance entry',
+      id: newAttendance.id,
     });
   }),
 ];
@@ -117,8 +118,8 @@ exports.attendance_get = [
 ];
 
 //update an attendance record
-//takes a date (html format) and takes an attendance array (must match schema)
-//needs attendance, date, and id in the request body
+//takes an attendance array (must match schema)
+//needs attendance and id in the request body
 //attendance is
 
 exports.attendance_update = [

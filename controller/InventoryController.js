@@ -69,7 +69,11 @@ exports.inventory_post = [
 
     res
       .status(201)
-      .json({ statusSucc: true, message: 'Inventory added successfully' });
+      .json({
+        statusSucc: true,
+        message: 'Inventory added successfully',
+        id: newInventory.id,
+      });
   }),
 ];
 

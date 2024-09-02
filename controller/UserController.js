@@ -48,8 +48,8 @@ exports.signup_post = [
     .withMessage('Please enter a role')
     .isLength({ max: 50 })
     .withMessage('Role - Maximum character length is 50')
-    .isAlphanumeric()
-    .withMessage('Role - Numbers and Letters only'),
+    .matches(/^[a-zA-Z0-9 ]+$/)
+    .withMessage('Role - Only letters, numbers, and spaces are allowed'),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
