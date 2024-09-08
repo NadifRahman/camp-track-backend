@@ -1,6 +1,9 @@
 <h1 align="center">
   <br>
-  <a href="http://www.amitmerchant.com/electron-markdownify"><img src="https://raw.githubusercontent.com/NadifRahman/camp-track-frontend/main/public/camp-track-icon.png" alt="Camp Track" width="200"></a>
+  
+  <a href="https://camptrack.vercel.app/"><p align="center">
+  <img src="https://raw.githubusercontent.com/NadifRahman/camp-track-frontend/main/public/camp-track-icon.png" alt="Camp Track" width="200">
+  </p></a>
   <br>
   Camp Track
   <br>
